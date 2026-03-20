@@ -23,6 +23,10 @@
 # misc
 .DS_Store
 *.pem
+# agent configuration files
+AGENTS.md
+CLAUDE.md
+
 
 # debug
 npm-debug.log*
