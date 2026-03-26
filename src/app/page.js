@@ -67,10 +67,10 @@ export default function HomePage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Discover Events in Zimbabwe
+            Discover Events for Zimbabweans in the UK
           </h1>
           <p className="text-lg text-gray-600">
-            Find and explore upcoming events across the country
+            Find and explore upcoming events for the Zimbabwean community in the UK
           </p>
         </div>
 

@@ -1,5 +1,7 @@
 # Zim Events Frontend - Setup Guide
 
+Events for Zimbabweans in the UK
+
 ## Quick Start
 
 ### 1. Install Dependencies

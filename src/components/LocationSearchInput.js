@@ -113,7 +113,7 @@ export default function LocationSearchInput({ value, onChange, error, className 
                     onFocus={() => query.length >= 2 && suggestions.length > 0 && setIsOpen(true)}
                     className={`w-full px-4 py-2 pr-20 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : 'border-gray-300'
                         } ${className}`}
-                    placeholder="e.g., Harare, Zimbabwe"
+                    placeholder="e.g., London, Manchester, Birmingham"
                     autoComplete="off"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">

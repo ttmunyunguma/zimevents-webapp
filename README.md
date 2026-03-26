@@ -1,6 +1,6 @@
 # Zim Events - Frontend
 
-A modern, user-friendly web application for discovering and submitting events in Zimbabwe. Built with Next.js 16 and Tailwind CSS.
+A modern, user-friendly web application for discovering and submitting events for Zimbabweans in the UK. Built with Next.js 16 and Tailwind CSS.
 
 ## Features
 
@@ -184,7 +184,7 @@ The application uses Tailwind CSS with a custom design system:
 
 ## License
 
-This project is part of the Zim Events platform.
+This project is part of the Zim Events platform for the Zimbabwean community in the UK.
 
 ## Support
 

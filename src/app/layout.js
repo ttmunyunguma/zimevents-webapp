@@ -5,9 +5,9 @@ import Header from '@/components/Header';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Zim Events - Discover Events in Zimbabwe',
-  description: 'Find and explore upcoming events across Zimbabwe. From concerts to conferences, discover what\'s happening in your community.',
-  keywords: 'Zimbabwe events, Harare events, Bulawayo events, community events, concerts, conferences',
+  title: 'Zim Events - Discover Events for Zimbabweans in the UK',
+  description: 'Find and explore upcoming events for Zimbabweans in the UK. From concerts to conferences, discover what\'s happening in the Zimbabwean community.',
+  keywords: 'Zimbabwean events UK, Zimbabwe diaspora events, Zimbabwean community UK, community events, concerts, conferences',
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
               <div>
                 <h3 className="text-lg font-semibold mb-4">Zim Events</h3>
                 <p className="text-gray-400 text-sm">
-                  Your go-to platform for discovering events across Zimbabwe.
+                  Your go-to platform for discovering events for Zimbabweans in the UK.
                 </p>
               </div>
               <div>
@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
               <div>
                 <h3 className="text-lg font-semibold mb-4">About</h3>
                 <p className="text-gray-400 text-sm">
-                  Zim Events helps you stay connected with what's happening in your community.
+                  Zim Events helps you stay connected with the Zimbabwean community in the UK.
                 </p>
               </div>
             </div>
