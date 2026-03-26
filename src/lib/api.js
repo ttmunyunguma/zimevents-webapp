@@ -1,4 +1,5 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'dev-key-1234';
 
 class ApiError extends Error {
     constructor(message, status, data) {
@@ -17,6 +18,7 @@ async function fetchApi(endpoint, options = {}) {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
+                'X-Api-Key': API_KEY,
                 ...options.headers,
             },
         });
