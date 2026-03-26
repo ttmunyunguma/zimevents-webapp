@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { eventRequestsApi } from '@/lib/api';
 import { ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
+import LocationSearchInput from '@/components/LocationSearchInput';
 
 export default function SubmitEventPage() {
     const router = useRouter();
@@ -231,19 +232,22 @@ export default function SubmitEventPage() {
                                 <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
                                     Location <span className="text-red-500">*</span>
                                 </label>
-                                <input
-                                    type="text"
-                                    id="location"
-                                    name="location"
+                                <LocationSearchInput
                                     value={formData.location}
-                                    onChange={handleChange}
-                                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.location ? 'border-red-500' : 'border-gray-300'
-                                        }`}
-                                    placeholder="e.g., Harare, Zimbabwe"
+                                    onChange={(value) => {
+                                        setFormData(prev => ({ ...prev, location: value }));
+                                        if (errors.location) {
+                                            setErrors(prev => ({ ...prev, location: '' }));
+                                        }
+                                    }}
+                                    error={errors.location}
                                 />
                                 {errors.location && (
                                     <p className="mt-1 text-sm text-red-600">{errors.location}</p>
                                 )}
+                                <p className="mt-1 text-sm text-gray-500">
+                                    Start typing to search, or enter manually
+                                </p>
                             </div>
                         </div>
 

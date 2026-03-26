@@ -70,6 +70,19 @@ export const eventsApi = {
     },
 };
 
+export const locationsApi = {
+    /**
+     * Search for locations
+     * @param {string} search - Search query string
+     */
+    async searchLocations(search) {
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+
+        return fetchApi(`/locations?${params.toString()}`);
+    },
+};
+
 export const eventRequestsApi = {
     /**
      * Submit a new event request
