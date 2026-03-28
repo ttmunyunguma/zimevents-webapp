@@ -83,6 +83,19 @@ export const locationsApi = {
     },
 };
 
+export const categoriesApi = {
+    /**
+     * Search for categories
+     * @param {string} search - Search query string
+     */
+    async searchCategories(search) {
+        const params = new URLSearchParams();
+        if (search) params.append('search', search);
+
+        return fetchApi(`/categories?${params.toString()}`);
+    },
+};
+
 export const eventRequestsApi = {
     /**
      * Submit a new event request
