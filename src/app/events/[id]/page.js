@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { eventsApi } from '@/lib/api';
@@ -15,13 +15,7 @@ export default function EventDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        if (params.id) {
-            fetchEvent();
-        }
-    }, [params.id]);
-
-    const fetchEvent = async () => {
+    const fetchEvent = useCallback(async () => {
         setLoading(true);
         setError(null);
 
@@ -37,7 +31,13 @@ export default function EventDetailPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [params.id]);
+
+    useEffect(() => {
+        if (params.id) {
+            fetchEvent();
+        }
+    }, [params.id, fetchEvent]);
 
     if (loading) {
         return (
@@ -86,7 +86,7 @@ export default function EventDetailPage() {
                     <div className="bg-white rounded-lg shadow-md p-12 text-center">
                         <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                         <h3 className="text-xl font-semibold text-gray-900 mb-2">Event Not Found</h3>
-                        <p className="text-gray-600 mb-6">The event you're looking for doesn't exist.</p>
+                        <p className="text-gray-600 mb-6">The event you&apos;re looking for doesn&apos;t exist.</p>
                         <Link
                             href="/"
                             className="inline-block px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
@@ -201,3 +201,4 @@ export default function EventDetailPage() {
 }
 
 // Made with Bob
+

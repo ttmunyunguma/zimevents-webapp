@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { eventsApi } from '@/lib/api';
 import EventCard from '@/components/EventCard';
 import EventFilters from '@/components/EventFilters';
@@ -17,11 +17,7 @@ export default function HomePage() {
   const [filters, setFilters] = useState({});
   const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    fetchEvents();
-  }, [currentPage, filters]);
-
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -50,7 +46,11 @@ export default function HomePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, filters]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
