@@ -1,5 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'dev-key-1234';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.linkupzim.co.uk/api/v1';
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'cb4563fe-c840-4bdd-bdc6-06a8e21271b4';
 
 class ApiError extends Error {
     constructor(message, status, data) {
