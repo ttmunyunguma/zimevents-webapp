@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/Header';
@@ -29,14 +30,14 @@ export default function RootLayout({ children }) {
                 <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <a href="/" className="text-gray-400 hover:text-white transition-colors">
+                    <Link href="/" className="text-gray-400 hover:text-white transition-colors">
                       Browse Events
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/submit" className="text-gray-400 hover:text-white transition-colors">
+                    <Link href="/submit" className="text-gray-400 hover:text-white transition-colors">
                       Submit Event
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
