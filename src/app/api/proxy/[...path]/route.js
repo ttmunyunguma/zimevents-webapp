@@ -1,6 +1,16 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.linkupzim.co.uk/api/v1';
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY || '';
 
+function getClientIp(request) {
+    return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+        || request.headers.get('x-real-ip')
+        || 'unknown';
+}
+
+function logPrefix() {
+    return `[Proxy ${new Date().toISOString()}]`;
+}
+
 async function handler(request, { params }) {
     const { path } = await params;
     const targetPath = path.join('/');
@@ -8,9 +18,11 @@ async function handler(request, { params }) {
     const targetUrl = `${API_BASE_URL}/${targetPath}${url.search}`;
 
     const method = request.method;
+    const clientIp = getClientIp(request);
+    const userAgent = request.headers.get('user-agent') || 'unknown';
     const startTime = Date.now();
 
-    console.log(`[Proxy] --> ${method} ${targetUrl}`);
+    console.log(`${logPrefix()} --> ${method} ${targetUrl} | ip=${clientIp} ua="${userAgent}"`);
 
     try {
         const headers = {
@@ -26,7 +38,7 @@ async function handler(request, { params }) {
 
         const response = await fetch(targetUrl, fetchOptions);
         const duration = Date.now() - startTime;
-        console.log(`[Proxy] <-- ${method} ${targetUrl} ${response.status} (${duration}ms)`);
+        console.log(`${logPrefix()} <-- ${method} ${targetUrl} ${response.status} (${duration}ms) | ip=${clientIp}`);
 
         const data = await response.text();
 
@@ -36,7 +48,7 @@ async function handler(request, { params }) {
         });
     } catch (error) {
         const duration = Date.now() - startTime;
-        console.error(`[Proxy] Error ${method} ${targetUrl} after ${duration}ms:`, error.message);
+        console.error(`${logPrefix()} ERROR ${method} ${targetUrl} (${duration}ms) | ip=${clientIp}`, error.message, error.cause || error);
 
         return Response.json(
             { message: 'Backend unavailable', error: error.message },
