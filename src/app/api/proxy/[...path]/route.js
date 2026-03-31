@@ -1,5 +1,5 @@
-const API_BASE_URL = process.env.API_URL || 'https://api.linkupzim.co.uk/api/v1';
-const API_KEY = process.env.API_KEY || 'cb4563fe-c840-4bdd-bdc6-06a8e21271b4';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.linkupzim.co.uk/api/v1';
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || '';
 
 async function handler(request, { params }) {
     const { path } = await params;
