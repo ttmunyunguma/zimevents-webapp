@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Filter, X } from 'lucide-react';
 
 export default function EventFilters({ onFilterChange, categories = [] }) {
@@ -8,6 +8,8 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
     const [dateFilter, setDateFilter] = useState('all');
     const [customDate, setCustomDate] = useState('');
     const [showFilters, setShowFilters] = useState(false);
+
+    const isInitialMount = useRef(true);
 
     const applyFilters = useCallback(() => {
         const filters = {
@@ -33,6 +35,10 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
     }, [selectedCategory, dateFilter, customDate, onFilterChange]);
 
     useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            return;
+        }
         applyFilters();
     }, [applyFilters]);
 

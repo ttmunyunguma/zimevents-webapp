@@ -52,10 +52,10 @@ export default function HomePage() {
     fetchEvents();
   }, [fetchEvents]);
 
-  const handleFilterChange = (newFilters) => {
+  const handleFilterChange = useCallback((newFilters) => {
     setFilters(newFilters);
     setCurrentPage(0); // Reset to first page when filters change
-  };
+  }, []);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
