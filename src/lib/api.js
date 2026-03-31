@@ -1,6 +1,3 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.linkupzim.co.uk/api/v1';
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || 'cb4563fe-c840-4bdd-bdc6-06a8e21271b4';
-
 class ApiError extends Error {
     constructor(message, status, data) {
         super(message);
@@ -11,14 +8,13 @@ class ApiError extends Error {
 }
 
 async function fetchApi(endpoint, options = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const url = `/api/proxy${endpoint}`;
 
     try {
         const response = await fetch(url, {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                'X-Api-Key': API_KEY,
                 ...options.headers,
             },
         });
