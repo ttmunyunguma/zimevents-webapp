@@ -63,18 +63,21 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Discover Events for Zimbabweans in the UK
+    <div className="min-h-[calc(100vh-4rem)]">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mb-10">
+          <p className="mb-3 inline-flex items-center rounded-full border border-indigo-200/80 bg-indigo-50/80 px-3 py-1 text-xs font-medium text-indigo-800">
+            Community events · United Kingdom
+          </p>
+          <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+            Discover events for Zimbabweans in the UK
           </h1>
-          <p className="text-lg text-gray-600">
-            Find and explore upcoming events for the Zimbabwean community in the UK
+          <p className="mt-4 max-w-2xl text-lg text-slate-600">
+            Concerts, meetups, and more — find what&apos;s on and stay connected.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4 lg:gap-10">
           <aside className="lg:col-span-1">
             <EventFilters
               onFilterChange={handleFilterChange}
@@ -86,45 +89,47 @@ export default function HomePage() {
             {loading ? (
               <LoadingSpinner text="Loading events..." />
             ) : error ? (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start">
-                <AlertCircle className="w-6 h-6 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
+              <div className="surface-card flex items-start gap-4 border-red-200/80 bg-red-50/50 p-6">
+                <AlertCircle className="mt-0.5 h-6 w-6 shrink-0 text-red-600" />
                 <div>
-                  <h3 className="text-red-800 font-semibold mb-1">Error Loading Events</h3>
-                  <p className="text-red-700">{error}</p>
+                  <h3 className="font-semibold text-red-900">Couldn&apos;t load events</h3>
+                  <p className="mt-1 text-red-800/90">{error}</p>
                   <button
+                    type="button"
                     onClick={fetchEvents}
-                    className="mt-3 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                    className="mt-4 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                   >
-                    Try Again
+                    Try again
                   </button>
                 </div>
               </div>
             ) : events.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                <div className="text-gray-400 mb-4">
-                  <AlertCircle className="w-16 h-16 mx-auto" />
+              <div className="surface-card p-12 text-center">
+                <div className="mb-4 text-slate-300">
+                  <AlertCircle className="mx-auto h-16 w-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  No Events Found
+                <h3 className="text-xl font-semibold text-slate-900">
+                  No events match
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  There are no events matching your current filters.
+                <p className="mt-2 text-slate-600">
+                  Try changing filters or check back soon for new listings.
                 </p>
                 <button
+                  type="button"
                   onClick={() => handleFilterChange({})}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="btn-primary mt-8"
                 >
-                  Clear Filters
+                  Clear filters
                 </button>
               </div>
             ) : (
               <>
-                <div className="mb-4 text-sm text-gray-600">
+                <div className="mb-5 text-sm text-slate-600">
                   Showing {events.length} event{events.length !== 1 ? 's' : ''}
-                  {totalPages > 1 && ` (Page ${currentPage + 1} of ${totalPages})`}
+                  {totalPages > 1 && ` · Page ${currentPage + 1} of ${totalPages}`}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                   {events.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}

@@ -111,43 +111,43 @@ export default function CategorySearchInput({ value, onChange, error, className 
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     onFocus={() => query.length >= 2 && suggestions.length > 0 && setIsOpen(true)}
-                    className={`w-full px-4 py-2 pr-20 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${error ? 'border-red-500' : 'border-gray-300'
+                    className={`input-field pr-20 py-2.5 ${error ? 'border-red-400 focus:ring-red-500/20' : ''
                         } ${className}`}
                     placeholder="e.g., Technology, Music, Sports"
                     autoComplete="off"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     {loading && (
-                        <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-600 border-t-transparent" />
                     )}
                     {query && !loading && (
                         <button
                             type="button"
                             onClick={handleClear}
-                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                            className="rounded-md p-1 transition-colors hover:bg-slate-100"
                             aria-label="Clear category"
                         >
-                            <X className="w-4 h-4 text-gray-400" />
+                            <X className="h-4 w-4 text-slate-400" />
                         </button>
                     )}
-                    <Tag className="w-4 h-4 text-gray-400" />
+                    <Tag className="h-4 w-4 text-slate-400" />
                 </div>
             </div>
 
             {/* Dropdown suggestions */}
             {isOpen && suggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg shadow-slate-200/50">
                     {suggestions.map((category, index) => (
                         <button
                             key={category.id || index}
                             type="button"
                             onClick={() => handleSelectCategory(category)}
-                            className={`w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors flex items-start gap-3 ${index === selectedIndex ? 'bg-blue-50' : ''
-                                } ${index !== suggestions.length - 1 ? 'border-b border-gray-100' : ''}`}
+                            className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${index === selectedIndex ? 'bg-indigo-50' : 'hover:bg-slate-50'
+                                } ${index !== suggestions.length - 1 ? 'border-b border-slate-100' : ''}`}
                         >
-                            <Tag className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                            <div className="flex-1 min-w-0">
-                                <div className="font-medium text-gray-900">
+                            <Tag className="mt-0.5 h-4 w-4 shrink-0 text-indigo-600" />
+                            <div className="min-w-0 flex-1">
+                                <div className="font-medium text-slate-900">
                                     {category.name}
                                 </div>
                             </div>
@@ -158,7 +158,7 @@ export default function CategorySearchInput({ value, onChange, error, className 
 
             {/* No results message */}
             {isOpen && !loading && query.length >= 2 && suggestions.length === 0 && (
-                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 text-center text-gray-500 text-sm">
+                <div className="absolute z-10 mt-1 w-full rounded-xl border border-slate-200 bg-white p-4 text-center text-sm text-slate-500 shadow-lg">
                     No categories found. You can type your category manually.
                 </div>
             )}

@@ -19,37 +19,38 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         pages.push(i);
     }
 
+    const btnBase =
+        'min-h-10 min-w-10 rounded-xl border text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-40';
+    const btnIdle = 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50';
+    const btnActive = 'border-indigo-600 bg-indigo-600 text-white shadow-sm shadow-indigo-600/20';
+
     return (
-        <div className="flex items-center justify-center space-x-2 mt-8">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
             <button
+                type="button"
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 0}
-                className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className={`${btnBase} ${btnIdle} inline-flex items-center justify-center px-2`}
                 aria-label="Previous page"
             >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="h-5 w-5" />
             </button>
 
             {startPage > 0 && (
                 <>
-                    <button
-                        onClick={() => onPageChange(0)}
-                        className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
-                    >
+                    <button type="button" onClick={() => onPageChange(0)} className={`${btnBase} ${btnIdle} px-3`}>
                         1
                     </button>
-                    {startPage > 1 && <span className="px-2 text-gray-500">...</span>}
+                    {startPage > 1 && <span className="px-1 text-slate-400">…</span>}
                 </>
             )}
 
             {pages.map((page) => (
                 <button
                     key={page}
+                    type="button"
                     onClick={() => onPageChange(page)}
-                    className={`px-4 py-2 rounded-md border transition-colors ${currentPage === page
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'border-gray-300 hover:bg-gray-50'
-                        }`}
+                    className={`${btnBase} px-3 ${currentPage === page ? btnActive : btnIdle}`}
                 >
                     {page + 1}
                 </button>
@@ -57,10 +58,11 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
 
             {endPage < totalPages - 1 && (
                 <>
-                    {endPage < totalPages - 2 && <span className="px-2 text-gray-500">...</span>}
+                    {endPage < totalPages - 2 && <span className="px-1 text-slate-400">…</span>}
                     <button
+                        type="button"
                         onClick={() => onPageChange(totalPages - 1)}
-                        className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50 transition-colors"
+                        className={`${btnBase} ${btnIdle} px-3`}
                     >
                         {totalPages}
                     </button>
@@ -68,12 +70,13 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             )}
 
             <button
+                type="button"
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={currentPage === totalPages - 1}
-                className="p-2 rounded-md border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className={`${btnBase} ${btnIdle} inline-flex items-center justify-center px-2`}
                 aria-label="Next page"
             >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="h-5 w-5" />
             </button>
         </div>
     );

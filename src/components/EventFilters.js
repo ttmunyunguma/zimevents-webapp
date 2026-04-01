@@ -51,37 +51,43 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
     const hasActiveFilters = selectedCategory || dateFilter !== 'all';
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
-                    <Filter className="w-5 h-5 mr-2 text-gray-600" />
-                    <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+        <div className="surface-card sticky top-20 p-5">
+            <div className="mb-4 flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                        <Filter className="h-4 w-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0">
+                        <h2 className="truncate text-base font-semibold text-slate-900">Filters</h2>
+                        <p className="text-xs text-slate-500">Refine the list</p>
+                    </div>
                     {hasActiveFilters && (
-                        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                        <span className="shrink-0 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
                             Active
                         </span>
                     )}
                 </div>
                 <button
+                    type="button"
                     onClick={() => setShowFilters(!showFilters)}
-                    className="lg:hidden text-gray-600 hover:text-gray-900"
+                    className="rounded-lg px-2 py-1 text-sm font-medium text-slate-600 hover:bg-slate-100 lg:hidden"
                 >
                     {showFilters ? 'Hide' : 'Show'}
                 </button>
             </div>
 
-            <div className={`space-y-4 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-                {/* Category Filter */}
+            <div className={`space-y-5 ${showFilters ? 'block' : 'hidden'} lg:block`}>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="filter-category" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
                         Category
                     </label>
                     <select
+                        id="filter-category"
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="input-field py-2.5 text-sm"
                     >
-                        <option value="">All Categories</option>
+                        <option value="">All categories</option>
                         {categories.map((category) => (
                             <option key={category} value={category}>
                                 {category}
@@ -90,47 +96,47 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
                     </select>
                 </div>
 
-                {/* Date Filter */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Date Range
+                    <label htmlFor="filter-date" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        Date range
                     </label>
                     <select
+                        id="filter-date"
                         value={dateFilter}
                         onChange={(e) => setDateFilter(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="input-field py-2.5 text-sm"
                     >
-                        <option value="all">All Dates</option>
-                        <option value="today">From Today</option>
-                        <option value="week">Next 7 Days</option>
-                        <option value="month">Next 30 Days</option>
-                        <option value="custom">Custom Date</option>
+                        <option value="all">All dates</option>
+                        <option value="today">From today</option>
+                        <option value="week">Next 7 days</option>
+                        <option value="month">Next 30 days</option>
+                        <option value="custom">Custom date</option>
                     </select>
                 </div>
 
-                {/* Custom Date Input */}
                 {dateFilter === 'custom' && (
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            From Date
+                        <label htmlFor="filter-custom-date" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            From date
                         </label>
                         <input
+                            id="filter-custom-date"
                             type="date"
                             value={customDate}
                             onChange={(e) => setCustomDate(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="input-field py-2.5 text-sm"
                         />
                     </div>
                 )}
 
-                {/* Clear Filters Button */}
                 {hasActiveFilters && (
                     <button
+                        type="button"
                         onClick={clearFilters}
-                        className="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                        className="btn-secondary w-full gap-2 py-2.5 text-sm"
                     >
-                        <X className="w-4 h-4 mr-2" />
-                        Clear Filters
+                        <X className="h-4 w-4" aria-hidden />
+                        Clear filters
                     </button>
                 )}
             </div>

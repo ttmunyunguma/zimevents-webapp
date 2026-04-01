@@ -1,25 +1,34 @@
 @import "tailwindcss";
 
-/* Custom scrollbar styles */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgb(241 245 249);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
+  background: rgb(148 163 184 / 0.6);
+  border-radius: 9999px;
+  border: 2px solid rgb(241 245 249);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: rgb(100 116 139 / 0.75);
 }
 
-/* Animation for loading spinner */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -30,7 +39,6 @@
   animation: spin 1s linear infinite;
 }
 
-/* Line clamp utilities */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -45,7 +53,6 @@
   overflow: hidden;
 }
 
-/* Prose styles for event descriptions */
 .prose {
   max-width: 65ch;
 }
@@ -63,4 +70,24 @@
   margin-bottom: 0;
 }
 
-/* Made with Bob */
+@layer components {
+  .surface-card {
+    @apply rounded-2xl border border-slate-200/80 bg-white/90 shadow-sm shadow-slate-200/40 backdrop-blur-sm;
+  }
+
+  .input-field {
+    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-slate-900 shadow-sm transition-colors placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-indigo-600 px-5 py-2.5 font-medium text-white shadow-sm shadow-indigo-600/20 transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-2.5 font-medium text-slate-700 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500/20;
+  }
+
+  .link-subtle {
+    @apply text-indigo-600 transition-colors hover:text-indigo-700;
+  }
+}

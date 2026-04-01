@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { eventRequestsApi } from '@/lib/api';
 import { ArrowLeft, CheckCircle, AlertCircle } from 'lucide-react';
@@ -9,7 +8,6 @@ import LocationSearchInput from '@/components/LocationSearchInput';
 import CategorySearchInput from '@/components/CategorySearchInput';
 
 export default function SubmitEventPage() {
-    const router = useRouter();
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -98,20 +96,23 @@ export default function SubmitEventPage() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-gray-50 py-12">
-                <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-                        <div className="mb-6">
-                            <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
+            <div className="min-h-[calc(100vh-4rem)] py-12">
+                <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+                    <div className="surface-card p-10 text-center shadow-md">
+                        <div className="mb-6 flex justify-center">
+                            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+                                <CheckCircle className="h-10 w-10" aria-hidden />
+                            </span>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                            Event Request Submitted!
+                        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                            Request submitted
                         </h2>
-                        <p className="text-gray-600 mb-6">
-                            Thank you for submitting your event. Our team will review it and add it to the platform if approved.
+                        <p className="mt-3 text-slate-600">
+                            Thank you. We&apos;ll review your event and publish it if it meets our guidelines.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                             <button
+                                type="button"
                                 onClick={() => {
                                     setSubmitted(false);
                                     setFormData({
@@ -125,15 +126,12 @@ export default function SubmitEventPage() {
                                         additionalInfo: '',
                                     });
                                 }}
-                                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                className="btn-primary px-6 py-3"
                             >
-                                Submit Another Event
+                                Submit another event
                             </button>
-                            <Link
-                                href="/"
-                                className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                            >
-                                Browse Events
+                            <Link href="/" className="btn-secondary px-6 py-3">
+                                Browse events
                             </Link>
                         </div>
                     </div>
@@ -143,37 +141,34 @@ export default function SubmitEventPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Link
-                    href="/"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6 transition-colors"
-                >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Events
+        <div className="min-h-[calc(100vh-4rem)] py-8">
+            <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+                <Link href="/" className="link-subtle mb-8 inline-flex items-center gap-2 text-sm font-medium">
+                    <ArrowLeft className="h-4 w-4" aria-hidden />
+                    Back to events
                 </Link>
 
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Submit an Event</h1>
-                    <p className="text-gray-600 mb-8">
-                        Share your event with the community. All submissions are reviewed before being published.
+                <div className="surface-card p-8 shadow-md sm:p-10">
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">Submit an event</h1>
+                    <p className="mt-2 text-slate-600">
+                        Share it with the community. We review every submission before it goes live.
                     </p>
 
                     {submitError && (
-                        <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
-                            <AlertCircle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
+                        <div className="mt-8 flex gap-3 rounded-2xl border border-red-200/80 bg-red-50/50 p-4">
+                            <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
                             <div>
-                                <h3 className="text-red-800 font-semibold mb-1">Submission Failed</h3>
-                                <p className="text-red-700 text-sm">{submitError}</p>
+                                <h3 className="font-semibold text-red-900">Something went wrong</h3>
+                                <p className="mt-0.5 text-sm text-red-800/90">{submitError}</p>
                             </div>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className={`space-y-6 ${submitError ? 'mt-6' : 'mt-10'}`}>
                         {/* Title */}
                         <div>
-                            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                                Event Title <span className="text-red-500">*</span>
+                            <label htmlFor="title" className="mb-2 block text-sm font-medium text-slate-700">
+                                Event title <span className="text-red-500">*</span>
                             </label>
                             <input
                                 type="text"
@@ -181,8 +176,7 @@ export default function SubmitEventPage() {
                                 name="title"
                                 value={formData.title}
                                 onChange={handleChange}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.title ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                className={`input-field ${errors.title ? 'border-red-400 focus:ring-red-500/20' : ''}`}
                                 placeholder="e.g., Annual Tech Conference 2026"
                             />
                             {errors.title && (
@@ -192,7 +186,7 @@ export default function SubmitEventPage() {
 
                         {/* Description */}
                         <div>
-                            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="description" className="mb-2 block text-sm font-medium text-slate-700">
                                 Description
                             </label>
                             <textarea
@@ -201,17 +195,17 @@ export default function SubmitEventPage() {
                                 value={formData.description}
                                 onChange={handleChange}
                                 rows={4}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="input-field min-h-[120px] resize-y"
                                 placeholder="Provide details about your event..."
                             />
                         </div>
 
                         {/* Date and Location Row */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                             {/* Date */}
                             <div>
-                                <label htmlFor="dateOfEvent" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Event Date <span className="text-red-500">*</span>
+                                <label htmlFor="dateOfEvent" className="mb-2 block text-sm font-medium text-slate-700">
+                                    Event date <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="date"
@@ -220,8 +214,7 @@ export default function SubmitEventPage() {
                                     value={formData.dateOfEvent}
                                     onChange={handleChange}
                                     min={new Date().toISOString().split('T')[0]}
-                                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.dateOfEvent ? 'border-red-500' : 'border-gray-300'
-                                        }`}
+                                    className={`input-field ${errors.dateOfEvent ? 'border-red-400 focus:ring-red-500/20' : ''}`}
                                 />
                                 {errors.dateOfEvent && (
                                     <p className="mt-1 text-sm text-red-600">{errors.dateOfEvent}</p>
@@ -230,7 +223,7 @@ export default function SubmitEventPage() {
 
                             {/* Location */}
                             <div>
-                                <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="mb-2 block text-sm font-medium text-slate-700">
                                     Location <span className="text-red-500">*</span>
                                 </label>
                                 <LocationSearchInput
@@ -246,7 +239,7 @@ export default function SubmitEventPage() {
                                 {errors.location && (
                                     <p className="mt-1 text-sm text-red-600">{errors.location}</p>
                                 )}
-                                <p className="mt-1 text-sm text-gray-500">
+                                <p className="mt-1 text-sm text-slate-500">
                                     Start typing to search, or enter manually
                                 </p>
                             </div>
@@ -254,7 +247,7 @@ export default function SubmitEventPage() {
 
                         {/* External URL */}
                         <div>
-                            <label htmlFor="externalUrl" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="externalUrl" className="mb-2 block text-sm font-medium text-slate-700">
                                 Event URL <span className="text-red-500">*</span>
                             </label>
                             <input
@@ -263,21 +256,20 @@ export default function SubmitEventPage() {
                                 name="externalUrl"
                                 value={formData.externalUrl}
                                 onChange={handleChange}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.externalUrl ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                className={`input-field ${errors.externalUrl ? 'border-red-400 focus:ring-red-500/20' : ''}`}
                                 placeholder="https://example.com/event"
                             />
                             {errors.externalUrl && (
                                 <p className="mt-1 text-sm text-red-600">{errors.externalUrl}</p>
                             )}
-                            <p className="mt-1 text-sm text-gray-500">
-                                Link to the official event page or registration
+                            <p className="mt-1 text-sm text-slate-500">
+                                Official page or registration link
                             </p>
                         </div>
 
                         {/* Category */}
                         <div>
-                            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label className="mb-2 block text-sm font-medium text-slate-700">
                                 Category
                             </label>
                             <CategorySearchInput
@@ -293,15 +285,15 @@ export default function SubmitEventPage() {
                             {errors.category && (
                                 <p className="mt-1 text-sm text-red-600">{errors.category}</p>
                             )}
-                            <p className="mt-1 text-sm text-gray-500">
+                            <p className="mt-1 text-sm text-slate-500">
                                 Start typing to search, or enter manually
                             </p>
                         </div>
 
                         {/* Contact Information */}
                         <div>
-                            <label htmlFor="submitterContact" className="block text-sm font-medium text-gray-700 mb-2">
-                                Your Contact (Optional)
+                            <label htmlFor="submitterContact" className="mb-2 block text-sm font-medium text-slate-700">
+                                Your contact (optional)
                             </label>
                             <input
                                 type="text"
@@ -309,18 +301,18 @@ export default function SubmitEventPage() {
                                 name="submitterContact"
                                 value={formData.submitterContact}
                                 onChange={handleChange}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="input-field"
                                 placeholder="Email or phone number"
                             />
-                            <p className="mt-1 text-sm text-gray-500">
-                                In case we need to reach you about this event
+                            <p className="mt-1 text-sm text-slate-500">
+                                If we need to follow up about this event
                             </p>
                         </div>
 
                         {/* Additional Info */}
                         <div>
-                            <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700 mb-2">
-                                Additional Information
+                            <label htmlFor="additionalInfo" className="mb-2 block text-sm font-medium text-slate-700">
+                                Additional information
                             </label>
                             <textarea
                                 id="additionalInfo"
@@ -328,24 +320,20 @@ export default function SubmitEventPage() {
                                 value={formData.additionalInfo}
                                 onChange={handleChange}
                                 rows={3}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                placeholder="Any other details you'd like to share..."
+                                className="input-field min-h-[96px] resize-y"
+                                placeholder={"Any other details you'd like to share..."}
                             />
                         </div>
 
                         {/* Submit Button */}
-                        <div className="pt-4">
-                            <button
-                                type="submit"
-                                disabled={submitting}
-                                className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                            >
-                                {submitting ? 'Submitting...' : 'Submit Event Request'}
+                        <div className="pt-2">
+                            <button type="submit" disabled={submitting} className="btn-primary w-full py-3 text-base disabled:opacity-50">
+                                {submitting ? 'Submitting…' : 'Submit event request'}
                             </button>
                         </div>
 
-                        <p className="text-sm text-gray-500 text-center">
-                            By submitting, you agree that your event information will be reviewed and may be published on this platform.
+                        <p className="text-center text-sm text-slate-500">
+                            By submitting, you agree your details may be reviewed and published if approved.
                         </p>
                     </form>
                 </div>
