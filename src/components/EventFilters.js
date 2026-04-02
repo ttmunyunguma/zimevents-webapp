@@ -1,7 +1,64 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Filter, X } from 'lucide-react';
+import { Filter, X, ChevronDown, Tag, Calendar } from 'lucide-react';
+
+function CustomSelect({ id, label, value, onChange, options, icon: Icon }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(e) {
+            if (ref.current && !ref.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const selectedOption = options.find((o) => o.value === value);
+
+    return (
+        <div ref={ref} className="relative">
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {label}
+            </label>
+            <button
+                id={id}
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="input-field flex w-full items-center gap-2 py-2.5 text-left text-sm"
+            >
+                {Icon && <Icon className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />}
+                <span className={`flex-1 truncate ${value ? 'text-slate-900' : 'text-slate-400'}`}>
+                    {selectedOption?.label || 'Select...'}
+                </span>
+                <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden />
+            </button>
+            {isOpen && (
+                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg shadow-slate-200/50">
+                    {options.map((option, index) => (
+                        <li key={option.value}>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    onChange(option.value);
+                                    setIsOpen(false);
+                                }}
+                                className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
+                                    value === option.value ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-slate-700 hover:bg-slate-50'
+                                } ${index < options.length - 1 ? 'border-b border-slate-100' : ''}`}
+                            >
+                                {option.label}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}
 
 export default function EventFilters({ onFilterChange, categories = [] }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -50,6 +107,19 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
 
     const hasActiveFilters = selectedCategory || dateFilter !== 'all';
 
+    const categoryOptions = [
+        { value: '', label: 'All categories' },
+        ...categories.map((c) => ({ value: c, label: c })),
+    ];
+
+    const dateOptions = [
+        { value: 'all', label: 'All dates' },
+        { value: 'today', label: 'From today' },
+        { value: 'week', label: 'Next 7 days' },
+        { value: 'month', label: 'Next 30 days' },
+        { value: 'custom', label: 'Custom date' },
+    ];
+
     return (
         <div className="surface-card sticky top-20 p-5">
             <div className="mb-4 flex items-center justify-between gap-2">
@@ -77,42 +147,23 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
             </div>
 
             <div className={`space-y-5 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-                <div>
-                    <label htmlFor="filter-category" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Category
-                    </label>
-                    <select
-                        id="filter-category"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="input-field py-2.5 text-sm"
-                    >
-                        <option value="">All categories</option>
-                        {categories.map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <CustomSelect
+                    id="filter-category"
+                    label="Category"
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                    options={categoryOptions}
+                    icon={Tag}
+                />
 
-                <div>
-                    <label htmlFor="filter-date" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        Date range
-                    </label>
-                    <select
-                        id="filter-date"
-                        value={dateFilter}
-                        onChange={(e) => setDateFilter(e.target.value)}
-                        className="input-field py-2.5 text-sm"
-                    >
-                        <option value="all">All dates</option>
-                        <option value="today">From today</option>
-                        <option value="week">Next 7 days</option>
-                        <option value="month">Next 30 days</option>
-                        <option value="custom">Custom date</option>
-                    </select>
-                </div>
+                <CustomSelect
+                    id="filter-date"
+                    label="Date range"
+                    value={dateFilter}
+                    onChange={setDateFilter}
+                    options={dateOptions}
+                    icon={Calendar}
+                />
 
                 {dateFilter === 'custom' && (
                     <div>

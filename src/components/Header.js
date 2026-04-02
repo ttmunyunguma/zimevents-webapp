@@ -33,13 +33,14 @@ export default function Header() {
                         </Link>
                         <Link
                             href="/submit"
-                            className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors ${pathname === '/submit'
+                            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors sm:gap-2 sm:px-4 ${pathname === '/submit'
                                 ? 'bg-indigo-700'
                                 : 'bg-indigo-600 hover:bg-indigo-700'
                                 }`}
                         >
-                            <Plus className="h-4 w-4" aria-hidden />
-                            Submit event
+                            <Plus className="hidden h-4 w-4 sm:inline-block" aria-hidden />
+                            <span className="sm:hidden">Submit</span>
+                            <span className="hidden sm:inline">Submit event</span>
                         </Link>
                     </nav>
                 </div>

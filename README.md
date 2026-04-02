@@ -42,7 +42,7 @@ yarn install
 Copy the example environment file and update with your backend API URL:
 
 ```bash
-cp .env.local.example .env.local
+cp .env.example .env
 ```
 
 Edit `.env.local`:

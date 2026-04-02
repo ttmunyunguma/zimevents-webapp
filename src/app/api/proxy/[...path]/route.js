@@ -1,5 +1,5 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.linkupzim.co.uk/api/v1';
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || '';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
 function getClientIp(request) {
     return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
