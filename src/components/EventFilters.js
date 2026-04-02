@@ -1,7 +1,64 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Filter, X } from 'lucide-react';
+import { Filter, X, ChevronDown, Tag, Calendar } from 'lucide-react';
+
+function CustomSelect({ id, label, value, onChange, options, icon: Icon }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null);
+
+    useEffect(() => {
+        function handleClickOutside(e) {
+            if (ref.current && !ref.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const selectedOption = options.find((o) => o.value === value);
+
+    return (
+        <div ref={ref} className="relative">
+            <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {label}
+            </label>
+            <button
+                id={id}
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="input-field flex w-full items-center gap-2 py-2.5 text-left text-sm"
+            >
+                {Icon && <Icon className="h-4 w-4 shrink-0 text-slate-400" aria-hidden />}
+                <span className={`flex-1 truncate ${value ? 'text-slate-900' : 'text-slate-400'}`}>
+                    {selectedOption?.label || 'Select...'}
+                </span>
+                <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} aria-hidden />
+            </button>
+            {isOpen && (
+                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-lg shadow-slate-200/50">
+                    {options.map((option, index) => (
+                        <li key={option.value}>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    onChange(option.value);
+                                    setIsOpen(false);
+                                }}
+                                className={`flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
+                                    value === option.value ? 'bg-indigo-50 font-medium text-indigo-700' : 'text-slate-700 hover:bg-slate-50'
+                                } ${index < options.length - 1 ? 'border-b border-slate-100' : ''}`}
+                            >
+                                {option.label}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}
 
 export default function EventFilters({ onFilterChange, categories = [] }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -50,87 +107,87 @@ export default function EventFilters({ onFilterChange, categories = [] }) {
 
     const hasActiveFilters = selectedCategory || dateFilter !== 'all';
 
+    const categoryOptions = [
+        { value: '', label: 'All categories' },
+        ...categories.map((c) => ({ value: c, label: c })),
+    ];
+
+    const dateOptions = [
+        { value: 'all', label: 'All dates' },
+        { value: 'today', label: 'From today' },
+        { value: 'week', label: 'Next 7 days' },
+        { value: 'month', label: 'Next 30 days' },
+        { value: 'custom', label: 'Custom date' },
+    ];
+
     return (
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center">
-                    <Filter className="w-5 h-5 mr-2 text-gray-600" />
-                    <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+        <div className="surface-card sticky top-20 p-5">
+            <div className="mb-4 flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-2">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                        <Filter className="h-4 w-4" aria-hidden />
+                    </span>
+                    <div className="min-w-0">
+                        <h2 className="truncate text-base font-semibold text-slate-900">Filters</h2>
+                        <p className="text-xs text-slate-500">Refine the list</p>
+                    </div>
                     {hasActiveFilters && (
-                        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                        <span className="shrink-0 rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
                             Active
                         </span>
                     )}
                 </div>
                 <button
+                    type="button"
                     onClick={() => setShowFilters(!showFilters)}
-                    className="lg:hidden text-gray-600 hover:text-gray-900"
+                    className="rounded-lg px-2 py-1 text-sm font-medium text-slate-600 hover:bg-slate-100 lg:hidden"
                 >
                     {showFilters ? 'Hide' : 'Show'}
                 </button>
             </div>
 
-            <div className={`space-y-4 ${showFilters ? 'block' : 'hidden'} lg:block`}>
-                {/* Category Filter */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Category
-                    </label>
-                    <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="">All Categories</option>
-                        {categories.map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+            <div className={`space-y-5 ${showFilters ? 'block' : 'hidden'} lg:block`}>
+                <CustomSelect
+                    id="filter-category"
+                    label="Category"
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                    options={categoryOptions}
+                    icon={Tag}
+                />
 
-                {/* Date Filter */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Date Range
-                    </label>
-                    <select
-                        value={dateFilter}
-                        onChange={(e) => setDateFilter(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="all">All Dates</option>
-                        <option value="today">From Today</option>
-                        <option value="week">Next 7 Days</option>
-                        <option value="month">Next 30 Days</option>
-                        <option value="custom">Custom Date</option>
-                    </select>
-                </div>
+                <CustomSelect
+                    id="filter-date"
+                    label="Date range"
+                    value={dateFilter}
+                    onChange={setDateFilter}
+                    options={dateOptions}
+                    icon={Calendar}
+                />
 
-                {/* Custom Date Input */}
                 {dateFilter === 'custom' && (
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                            From Date
+                        <label htmlFor="filter-custom-date" className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                            From date
                         </label>
                         <input
+                            id="filter-custom-date"
                             type="date"
                             value={customDate}
                             onChange={(e) => setCustomDate(e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="input-field py-2.5 text-sm"
                         />
                     </div>
                 )}
 
-                {/* Clear Filters Button */}
                 {hasActiveFilters && (
                     <button
+                        type="button"
                         onClick={clearFilters}
-                        className="w-full flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+                        className="btn-secondary w-full gap-2 py-2.5 text-sm"
                     >
-                        <X className="w-4 h-4 mr-2" />
-                        Clear Filters
+                        <X className="h-4 w-4" aria-hidden />
+                        Clear filters
                     </button>
                 )}
             </div>

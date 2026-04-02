@@ -8,33 +8,39 @@ export default function Header() {
     const pathname = usePathname();
 
     return (
-        <header className="bg-white shadow-sm border-b border-gray-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                    <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                        <Calendar className="w-8 h-8 text-blue-600" />
-                        <span className="text-2xl font-bold text-gray-900">Zim Events</span>
+        <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex h-16 items-center justify-between">
+                    <Link
+                        href="/"
+                        className="group flex items-center gap-2.5 rounded-lg outline-offset-4 transition-opacity hover:opacity-90"
+                    >
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-600/25">
+                            <Calendar className="h-5 w-5" aria-hidden />
+                        </span>
+                        <span className="text-xl font-bold tracking-tight text-slate-900">Zim Events</span>
                     </Link>
 
-                    <nav className="flex items-center space-x-4">
+                    <nav className="flex items-center gap-2 sm:gap-3">
                         <Link
                             href="/"
-                            className={`px-4 py-2 rounded-md font-medium transition-colors ${pathname === '/'
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-gray-700 hover:bg-gray-50'
+                            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${pathname === '/'
+                                ? 'bg-indigo-50 text-indigo-700 ring-1 ring-indigo-100'
+                                : 'text-slate-600 hover:bg-slate-100/80'
                                 }`}
                         >
                             Events
                         </Link>
                         <Link
                             href="/submit"
-                            className={`flex items-center px-4 py-2 rounded-md font-medium transition-colors ${pathname === '/submit'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 transition-colors sm:gap-2 sm:px-4 ${pathname === '/submit'
+                                ? 'bg-indigo-700'
+                                : 'bg-indigo-600 hover:bg-indigo-700'
                                 }`}
                         >
-                            <Plus className="w-4 h-4 mr-2" />
-                            Submit Event
+                            <Plus className="hidden h-4 w-4 sm:inline-block" aria-hidden />
+                            <span className="sm:hidden">Submit</span>
+                            <span className="hidden sm:inline">Submit event</span>
                         </Link>
                     </nav>
                 </div>

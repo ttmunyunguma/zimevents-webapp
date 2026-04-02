@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { eventsApi } from '@/lib/api';
 import { formatDate, getRelativeDate, stringToColor, isPastEvent } from '@/lib/utils';
@@ -10,7 +10,6 @@ import { Calendar, MapPin, ExternalLink, ArrowLeft, AlertCircle } from 'lucide-r
 
 export default function EventDetailPage() {
     const params = useParams();
-    const router = useRouter();
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -41,8 +40,8 @@ export default function EventDetailPage() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 py-12">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="min-h-[calc(100vh-4rem)] py-12">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
                     <LoadingSpinner text="Loading event details..." />
                 </div>
             </div>
@@ -51,25 +50,23 @@ export default function EventDetailPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-gray-50 py-12">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex items-start">
-                        <AlertCircle className="w-6 h-6 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1">
-                            <h3 className="text-red-800 font-semibold mb-1">Error Loading Event</h3>
-                            <p className="text-red-700 mb-4">{error}</p>
-                            <div className="flex space-x-3">
+            <div className="min-h-[calc(100vh-4rem)] py-12">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div className="surface-card flex gap-4 border-red-200/80 bg-red-50/50 p-6">
+                        <AlertCircle className="mt-0.5 h-6 w-6 shrink-0 text-red-600" />
+                        <div className="min-w-0 flex-1">
+                            <h3 className="font-semibold text-red-900">Couldn&apos;t load this event</h3>
+                            <p className="mt-1 text-red-800/90">{error}</p>
+                            <div className="mt-4 flex flex-wrap gap-3">
                                 <button
+                                    type="button"
                                     onClick={fetchEvent}
-                                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                                    className="rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                                 >
-                                    Try Again
+                                    Try again
                                 </button>
-                                <Link
-                                    href="/"
-                                    className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                                >
-                                    Back to Events
+                                <Link href="/" className="btn-secondary py-2.5 text-sm">
+                                    Back to events
                                 </Link>
                             </div>
                         </div>
@@ -81,17 +78,14 @@ export default function EventDetailPage() {
 
     if (!event) {
         return (
-            <div className="min-h-screen bg-gray-50 py-12">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-lg shadow-md p-12 text-center">
-                        <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">Event Not Found</h3>
-                        <p className="text-gray-600 mb-6">The event you&apos;re looking for doesn&apos;t exist.</p>
-                        <Link
-                            href="/"
-                            className="inline-block px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                        >
-                            Back to Events
+            <div className="min-h-[calc(100vh-4rem)] py-12">
+                <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                    <div className="surface-card p-12 text-center">
+                        <AlertCircle className="mx-auto mb-4 h-16 w-16 text-slate-300" />
+                        <h3 className="text-xl font-semibold text-slate-900">Event not found</h3>
+                        <p className="mt-2 text-slate-600">The event you&apos;re looking for doesn&apos;t exist.</p>
+                        <Link href="/" className="btn-primary mt-8 inline-flex">
+                            Back to events
                         </Link>
                     </div>
                 </div>
@@ -103,33 +97,30 @@ export default function EventDetailPage() {
     const categoryColor = stringToColor(event.category);
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <Link
-                    href="/"
-                    className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6 transition-colors"
-                >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Events
+        <div className="min-h-[calc(100vh-4rem)] py-8">
+            <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+                <Link href="/" className="link-subtle mb-8 inline-flex items-center gap-2 text-sm font-medium">
+                    <ArrowLeft className="h-4 w-4" aria-hidden />
+                    Back to events
                 </Link>
 
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="surface-card overflow-hidden shadow-md shadow-slate-200/50">
                     {isPast && (
-                        <div className="bg-yellow-50 border-b border-yellow-200 px-6 py-3">
-                            <p className="text-sm text-yellow-800 font-medium">
-                                ⚠️ This event has already passed
+                        <div className="border-b border-amber-200/80 bg-amber-50 px-6 py-3">
+                            <p className="text-sm font-medium text-amber-900">
+                                This event has already passed
                             </p>
                         </div>
                     )}
 
-                    <div className="p-8">
-                        <div className="flex items-start justify-between mb-6">
-                            <h1 className="text-3xl font-bold text-gray-900 flex-1 pr-4">
+                    <div className="p-8 sm:p-10">
+                        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                            <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
                                 {event.title}
                             </h1>
                             {event.category && (
                                 <span
-                                    className="px-4 py-2 rounded-full text-sm font-medium text-white whitespace-nowrap"
+                                    className="shrink-0 self-start rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow-sm"
                                     style={{ backgroundColor: categoryColor }}
                                 >
                                     {event.category}
@@ -137,34 +128,34 @@ export default function EventDetailPage() {
                             )}
                         </div>
 
-                        <div className="space-y-4 mb-8">
-                            <div className="flex items-start">
-                                <Calendar className="w-6 h-6 text-gray-400 mr-3 mt-1 flex-shrink-0" />
+                        <div className="mb-10 space-y-5">
+                            <div className="flex gap-4">
+                                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+                                    <Calendar className="h-5 w-5" aria-hidden />
+                                </span>
                                 <div>
-                                    <p className="text-lg font-semibold text-gray-900">
+                                    <p className="text-lg font-semibold text-slate-900">
                                         {formatDate(event.dateOfEvent, 'EEEE, MMMM d, yyyy')}
                                     </p>
-                                    <p className="text-sm text-gray-600">
-                                        {getRelativeDate(event.dateOfEvent)}
-                                    </p>
+                                    <p className="text-sm text-slate-600">{getRelativeDate(event.dateOfEvent)}</p>
                                 </div>
                             </div>
 
                             {event.location && (
-                                <div className="flex items-start">
-                                    <MapPin className="w-6 h-6 text-gray-400 mr-3 mt-1 flex-shrink-0" />
-                                    <div>
-                                        <p className="text-lg text-gray-900">{event.location}</p>
-                                    </div>
+                                <div className="flex gap-4">
+                                    <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                                        <MapPin className="h-5 w-5" aria-hidden />
+                                    </span>
+                                    <p className="text-lg leading-snug text-slate-900">{event.location}</p>
                                 </div>
                             )}
                         </div>
 
                         {event.description && (
-                            <div className="mb-8">
-                                <h2 className="text-xl font-semibold text-gray-900 mb-3">About This Event</h2>
-                                <div className="prose prose-gray max-w-none">
-                                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                            <div className="mb-10">
+                                <h2 className="mb-4 text-xl font-semibold text-slate-900">About this event</h2>
+                                <div className="prose max-w-none">
+                                    <p className="whitespace-pre-wrap leading-relaxed text-slate-700">
                                         {event.description}
                                     </p>
                                 </div>
@@ -172,25 +163,23 @@ export default function EventDetailPage() {
                         )}
 
                         {event.externalUrl && (
-                            <div className="pt-6 border-t border-gray-200">
+                            <div className="border-t border-slate-200 pt-8">
                                 <a
                                     href={event.externalUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                                    className="btn-primary inline-flex gap-2 px-6 py-3 text-base"
                                 >
-                                    <span className="mr-2">Visit Event Page</span>
-                                    <ExternalLink className="w-5 h-5" />
+                                    <span>Visit event page</span>
+                                    <ExternalLink className="h-5 w-5" aria-hidden />
                                 </a>
                             </div>
                         )}
 
-                        <div className="mt-8 pt-6 border-t border-gray-200">
-                            <div className="flex items-center justify-between text-sm text-gray-500">
-                                <span>Event ID: {event.id}</span>
-                                <span>
-                                    Added {formatDate(event.createdAt, 'MMM d, yyyy')}
-                                </span>
+                        <div className="mt-10 border-t border-slate-200 pt-6">
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500">
+                                <span>Event ID {event.id}</span>
+                                <span>Added {formatDate(event.createdAt, 'MMM d, yyyy')}</span>
                             </div>
                         </div>
                     </div>
