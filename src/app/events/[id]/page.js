@@ -176,12 +176,6 @@ export default function EventDetailPage() {
                             </div>
                         )}
 
-                        <div className="mt-10 border-t border-slate-200 pt-6">
-                            <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-slate-500">
-                                <span>Event ID {event.id}</span>
-                                <span>Added {formatDate(event.createdAt, 'MMM d, yyyy')}</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
